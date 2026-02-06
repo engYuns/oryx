@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "routes": [
+    { "src": "^/data/.*", "status": 404 },
+    { "src": "^/tools/.*", "status": 404 },
+    { "src": "^/server\\.mjs$", "status": 404 },
+    { "src": "^/package(-lock)?\\.json$", "status": 404 },
+    { "src": "^/\\.(env|env\\.example)$", "status": 404 }
+  ]
+}

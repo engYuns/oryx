@@ -52,3 +52,50 @@ Notes for production:
 URLs after publish:
 - Main site: `https://yourdomain.com/`
 - Admin: `https://yourdomain.com/admin.html`
+
+## Deploy on Vercel (full version)
+
+Vercel cannot run the long-lived Express server (`server.mjs`) and it cannot write to the project filesystem. For the full admin experience on Vercel, this repo uses:
+
+- Serverless functions in `api/` for `/api/*`
+- Vercel Blob for image uploads
+- Vercel KV (Upstash Redis) for storing the editable content JSON
+
+### 1) Create the required storages
+
+In Vercel Dashboard:
+
+1) Storage → create a **Blob** store
+2) Add a **Redis/KV** integration (Vercel KV is backed by Upstash)
+
+### 2) Set environment variables
+
+In your Vercel Project → Settings → Environment Variables:
+
+- `ORYX_ADMIN_PASSWORD` (your strong admin password)
+- `ORYX_ADMIN_TOKEN_SECRET` (a long random string, used to sign the admin cookie)
+- `BLOB_READ_WRITE_TOKEN` (from the Blob store)
+
+For KV/Redis, Vercel will normally inject these automatically when you attach the integration:
+
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+
+Also set:
+
+- `NODE_ENV=production`
+
+### 3) Deploy
+
+1) Import the GitHub repo into Vercel
+2) Framework preset: **Other** (static)
+3) Build command: **None**
+4) Output directory: **/** (default)
+5) Deploy
+
+After deploy:
+
+- Main site: `https://<your-project>.vercel.app/`
+- Admin: `https://<your-project>.vercel.app/admin.html`
+
+Note: Uploaded images will return a public Blob URL (not `/assets/...`). That’s expected on Vercel.

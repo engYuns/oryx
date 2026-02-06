@@ -14,8 +14,12 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 
+# Vercel
+.vercel/
+
 # runtime uploads (generated in production)
 assets/uploads/
 
 # tool outputs
 tools/_extract_latest.log
+

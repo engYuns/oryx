@@ -413,6 +413,8 @@ h1{
   justify-content:space-between;
   gap:14px;
 }
+.banner-copy{ min-width:0; }
+.banner .button{ flex: 0 0 auto; white-space: nowrap; }
 .banner h3{ margin:0; }
 .banner p{ margin:6px 0 0; color: var(--muted); }
 

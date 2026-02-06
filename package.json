@@ -11,6 +11,7 @@
     "render:profile": "node tools/render-pdf-pages.mjs \"c:/Users/mahdi/Desktop/ORYX_Profile.pdf\" 1,2 1.6",
     "analyze:profile": "node tools/palette-from-png.mjs assets/profile_latest/profile-page-01.png",
     "serve": "npx --yes http-server . -p 5173",
+    "build": "node -e \"console.log('No build step (static site + Vercel functions).')\"",
     "dev": "node server.mjs",
     "start": "node server.mjs",
     "logo:transparent": "node tools/make-logo-transparent.mjs --in assets/oryx-logo.png --out assets/oryx-logo.png",

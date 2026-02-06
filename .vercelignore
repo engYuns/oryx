@@ -1,0 +1,19 @@
+# Prevent sensitive / non-public files from being deployed as static assets
+
+# Local secrets
+.env
+
+# Local editor settings
+.vscode/
+
+# Node dependencies (Vercel installs dependencies itself)
+node_modules/
+
+# Local data file (content is stored in KV on Vercel)
+data/content.json
+
+# Local dev server
+server.mjs
+
+# Tooling
+tools/

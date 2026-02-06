@@ -1,0 +1,34 @@
+{
+  "hero": "assets/oryx-logo-white.png?v=20260206-2",
+  "about": [
+    "assets/jobs/about/about-01.jpg?v=20260206-1",
+    "assets/jobs/about/about-02.jpg?v=20260206-1",
+    "assets/jobs/about/about-03.jpg?v=20260206-1"
+  ],
+  "services": [
+    "assets/jobs/services/services-01.jpg?v=20260206-1",
+    "assets/jobs/services/services-03.jpg?v=20260206-1",
+    "assets/jobs/services/services-02.jpg?v=20260206-1"
+    
+  ],
+  "portfolio": [],
+  "otherWorks": [],
+  "contact": [],
+  "projects": {
+    "zogor-place": [
+      "assets/jobs/zogor-place/zogor-01.jpg",
+      "assets/jobs/zogor-place/zogor-02.jpg"
+    ],
+    "villa-dream-city": [
+      "assets/jobs/villa-dream-city/dream-01.jpg",
+      "assets/jobs/villa-dream-city/dream-02.jpg"
+    ],
+    "villa-ankawa": [
+      "assets/jobs/villa-ankawa/ankawa-01.jpg",
+      "assets/jobs/villa-ankawa/ankawa-02.jpg"
+    ],
+    "empire-square": [
+      "assets/jobs/empire-square/empire-01.jpg"
+    ]
+  }
+}

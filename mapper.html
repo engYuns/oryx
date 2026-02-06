@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oryx Profile Image Mapper</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .mapper{ padding: 28px 0; }
+      .mapper-grid{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px; }
+      .mapper-card{ border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); border-radius: 18px; padding: 16px; }
+      .mapper-actions{ display:flex; gap: 10px; flex-wrap: wrap; }
+      .img-list{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+      .img-item{ grid-column: span 4; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); border-radius: 16px; overflow:hidden; }
+      .img-item img{ width:100%; height: 180px; object-fit: cover; display:block; background: rgba(0,0,0,.2); }
+      .img-item .meta{ padding: 12px; color: rgba(255,255,255,.72); font-size: 13px; display:grid; gap: 6px; }
+      .img-item .meta code{ color: rgba(255,255,255,.82); }
+      .img-item .controls{ display:flex; gap: 8px; flex-wrap: wrap; }
+      select{ width:100%; }
+      .slots{ display:grid; gap: 10px; }
+      .slot{ border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); border-radius: 16px; padding: 12px; }
+      .slot h3{ margin:0 0 8px; font-size: 14px; }
+      .slot .small{ color: rgba(255,255,255,.6); font-size: 12px; margin-top: 6px; }
+      .slot .files{ display:grid; gap: 6px; margin-top: 8px; }
+      .slot .files div{ display:flex; justify-content:space-between; gap: 8px; align-items:center; }
+      .slot button{ padding:8px 10px; border-radius: 12px; }
+      @media (max-width: 980px){
+        .mapper-grid{ grid-template-columns: 1fr; }
+        .img-item{ grid-column: span 6; }
+      }
+      @media (max-width: 680px){
+        .img-item{ grid-column: span 12; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header is-elevated">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-text">
+            <span class="brand-name">Oryx</span>
+            <span class="brand-tag">Profile Image Mapper</span>
+          </span>
+        </a>
+        <div class="mapper-actions">
+          <a class="button secondary" href="index.html">Back to site</a>
+          <button class="button primary" id="download">Download placements.json</button>
+          <button class="button tertiary" id="copy">Copy JSON</button>
+          <button class="button tertiary" id="reset">Reset</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mapper">
+      <div class="container">
+        <div class="section-head">
+          <h2>Accurate image placement</h2>
+          <p>Assign each extracted PDF image to the correct profile field (About, Services, Portfolio, Projects…). Then download <strong>placements.json</strong> and replace <code>assets/profile/placements.json</code>.</p>
+        </div>
+
+        <div class="mapper-grid">
+          <section class="mapper-card">
+            <h3 style="margin:0 0 10px;">Extracted images</h3>
+            <div class="img-list" id="imgList"></div>
+          </section>
+
+          <aside class="mapper-card">
+            <h3 style="margin:0 0 10px;">Current placements</h3>
+            <div class="slots" id="slots"></div>
+            <p class="muted" style="margin:12px 0 0;">Tip: use “Project Key” to map images to the detailed projects section.</p>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const SECTIONS = [
+        { id: 'hero', label: 'Hero (single)' },
+        { id: 'about', label: 'About (gallery)' },
+        { id: 'services', label: 'Services (gallery)' },
+        { id: 'portfolio', label: 'Portfolio (gallery)' },
+        { id: 'otherWorks', label: 'Other Works (gallery)' },
+        { id: 'contact', label: 'Contact (gallery)' },
+      ];
+
+      const PROJECT_KEYS = [
+        { id: '', label: '—' },
+        { id: 'zogor-place', label: 'Zogor Place' },
+        { id: 'villa-dream-city', label: 'Villa in Dream City' },
+        { id: 'villa-ankawa', label: 'Villa in Ankawa' },
+        { id: 'empire-square', label: 'Empire Square' },
+      ];
+
+      const state = {
+        manifest: null,
+        placements: null,
+      };
+
+      function loadJson(url){
+        return fetch(url, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+      }
+
+      function getDefaultPlacements(){
+        return {
+          hero: null,
+          about: [],
+          services: [],
+          portfolio: [],
+          otherWorks: [],
+          contact: [],
+          projects: {
+            'zogor-place': [],
+            'villa-dream-city': [],
+            'villa-ankawa': [],
+            'empire-square': [],
+          }
+        };
+      }
+
+      function ensurePlacements(p){
+        const d = getDefaultPlacements();
+        const out = Object.assign(d, p || {});
+        out.projects = Object.assign(d.projects, (p && p.projects) || {});
+        for (const k of Object.keys(d.projects)) out.projects[k] = Array.isArray(out.projects[k]) ? out.projects[k] : [];
+        for (const s of ['about','services','portfolio','otherWorks','contact']) out[s] = Array.isArray(out[s]) ? out[s] : [];
+        return out;
+      }
+
+      function saveLocal(){
+        localStorage.setItem('oryxPlacements', JSON.stringify(state.placements));
+      }
+
+      function loadLocal(){
+        try{
+          const raw = localStorage.getItem('oryxPlacements');
+          return raw ? JSON.parse(raw) : null;
+        }catch{ return null; }
+      }
+
+      function addTo(sectionId, file){
+        if (sectionId === 'hero') {
+          state.placements.hero = file;
+        } else {
+          state.placements[sectionId] = Array.from(new Set([...(state.placements[sectionId]||[]), file]));
+        }
+        saveLocal();
+        renderSlots();
+      }
+
+      function addToProject(key, file){
+        if (!key) return;
+        const arr = state.placements.projects[key] || [];
+        state.placements.projects[key] = Array.from(new Set([...arr, file]));
+        saveLocal();
+        renderSlots();
+      }
+
+      function removeFrom(sectionId, file){
+        if (sectionId === 'hero') {
+          if (state.placements.hero === file) state.placements.hero = null;
+        } else {
+          state.placements[sectionId] = (state.placements[sectionId] || []).filter(f => f !== file);
+        }
+        saveLocal();
+        renderSlots();
+      }
+
+      function removeFromProject(key, file){
+        state.placements.projects[key] = (state.placements.projects[key] || []).filter(f => f !== file);
+        saveLocal();
+        renderSlots();
+      }
+
+      function renderSlots(){
+        const slots = document.getElementById('slots');
+        slots.innerHTML = '';
+
+        // hero
+        slots.appendChild(slotBlock('Hero', state.placements.hero ? [state.placements.hero] : [], (f) => removeFrom('hero', f)));
+
+        for (const s of SECTIONS) {
+          if (s.id === 'hero') continue;
+          slots.appendChild(slotBlock(s.label, state.placements[s.id] || [], (f) => removeFrom(s.id, f)));
+        }
+
+        // projects
+        for (const pk of PROJECT_KEYS) {
+          if (!pk.id) continue;
+          slots.appendChild(slotBlock(`Project: ${pk.label}`, state.placements.projects[pk.id] || [], (f) => removeFromProject(pk.id, f)));
+        }
+      }
+
+      function slotBlock(title, files, onRemove){
+        const el = document.createElement('div');
+        el.className = 'slot';
+        const h = document.createElement('h3');
+        h.textContent = title;
+        el.appendChild(h);
+
+        const list = document.createElement('div');
+        list.className = 'files';
+
+        if (!files.length){
+          const empty = document.createElement('div');
+          empty.className = 'small';
+          empty.textContent = 'No images assigned.';
+          el.appendChild(empty);
+          return el;
+        }
+
+        for (const f of files) {
+          const row = document.createElement('div');
+          const left = document.createElement('div');
+          left.style.overflow = 'hidden';
+          left.style.textOverflow = 'ellipsis';
+          left.style.whiteSpace = 'nowrap';
+          left.textContent = f;
+          const btn = document.createElement('button');
+          btn.className = 'button tertiary';
+          btn.textContent = 'Remove';
+          btn.addEventListener('click', () => onRemove(f));
+          row.appendChild(left);
+          row.appendChild(btn);
+          list.appendChild(row);
+        }
+
+        el.appendChild(list);
+        return el;
+      }
+
+      function renderImages(){
+        const root = document.getElementById('imgList');
+        root.innerHTML = '';
+        const images = (state.manifest && state.manifest.images) || [];
+
+        for (const img of images) {
+          // ignore obvious banners by aspect
+          const aspect = img.width / img.height;
+          if (aspect > 2.8 || aspect < 0.30) continue;
+
+          const card = document.createElement('div');
+          card.className = 'img-item';
+
+          const im = document.createElement('img');
+          im.src = img.file;
+          im.alt = '';
+          im.loading = 'lazy';
+          im.decoding = 'async';
+          card.appendChild(im);
+
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.innerHTML = `
+            <div><strong>${img.id}</strong> • page ${img.page}</div>
+            <div><code>${img.section}${img.key ? ' / ' + img.key : ''}</code></div>
+          `;
+
+          const controls = document.createElement('div');
+          controls.className = 'controls';
+
+          const sel = document.createElement('select');
+          sel.innerHTML = SECTIONS.map(s => `<option value="${s.id}">${s.label}</option>`).join('');
+
+          const projectSel = document.createElement('select');
+          projectSel.innerHTML = PROJECT_KEYS.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
+
+          const addBtn = document.createElement('button');
+          addBtn.className = 'button secondary';
+          addBtn.textContent = 'Add to section';
+          addBtn.addEventListener('click', () => addTo(sel.value, img.file));
+
+          const addProjBtn = document.createElement('button');
+          addProjBtn.className = 'button tertiary';
+          addProjBtn.textContent = 'Add to project';
+          addProjBtn.addEventListener('click', () => addToProject(projectSel.value, img.file));
+
+          controls.appendChild(sel);
+          controls.appendChild(addBtn);
+          controls.appendChild(projectSel);
+          controls.appendChild(addProjBtn);
+
+          meta.appendChild(controls);
+          card.appendChild(meta);
+          root.appendChild(card);
+        }
+      }
+
+      function downloadJson(){
+        const blob = new Blob([JSON.stringify(state.placements, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'placements.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function copyJson(){
+        const text = JSON.stringify(state.placements, null, 2);
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
+
+      async function init(){
+        state.manifest = await loadJson('assets/profile/manifest.json');
+        const fromLocal = loadLocal();
+        const fromFile = await loadJson('assets/profile/placements.json');
+        state.placements = ensurePlacements(fromLocal || fromFile || null);
+
+        renderImages();
+        renderSlots();
+
+        document.getElementById('download').addEventListener('click', downloadJson);
+        document.getElementById('copy').addEventListener('click', copyJson);
+        document.getElementById('reset').addEventListener('click', () => {
+          localStorage.removeItem('oryxPlacements');
+          state.placements = ensurePlacements(fromFile || null);
+          renderSlots();
+        });
+      }
+
+      init();
+    </script>
+  </body>
+</html>

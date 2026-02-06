@@ -1,0 +1,21 @@
+.env
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# runtime uploads (generated in production)
+assets/uploads/
+
+# tool outputs
+tools/_extract_latest.log

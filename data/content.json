@@ -1,0 +1,270 @@
+{
+  "portfolio": [
+    {
+      "id": "rwanga-foundation",
+      "title": "Rwanga foundation",
+      "category": "commercial",
+      "meta": "Foundation",
+      "tags": [],
+      "description": "",
+      "thumb": null
+    },
+    {
+      "id": "hiwa-group",
+      "title": "Hiwa Group",
+      "category": "commercial",
+      "meta": "Commercial",
+      "tags": [
+        "Fit-out",
+        "Woodwork",
+        "Finishing"
+      ],
+      "description": "Commercial woodworking and interior carpentry delivered with premium finishing and durable materials.",
+      "thumb": null
+    },
+    {
+      "id": "apartment-park-view",
+      "title": "Apartment Park View",
+      "category": "commercial",
+      "meta": "Residential / Apartment",
+      "tags": [
+        "Built-ins",
+        "Cabinetry"
+      ],
+      "description": "Interior carpentry solutions designed to maximize space and maintain a clean modern look.",
+      "thumb": null
+    },
+    {
+      "id": "moit-hospital-center",
+      "title": "MOIT Hospital Center",
+      "category": "commercial",
+      "meta": "Healthcare",
+      "tags": [
+        "Paneling",
+        "Durability"
+      ],
+      "description": "High-quality woodwork with materials selected for long-term performance.",
+      "thumb": null
+    },
+    {
+      "id": "villa-in-new-azadi",
+      "title": "Villa in New Azadi",
+      "category": "villa",
+      "meta": "Villa",
+      "tags": [
+        "Custom",
+        "Interiors"
+      ],
+      "description": "Residential carpentry tailored to the client’s layout and preferred aesthetics.",
+      "thumb": null
+    },
+    {
+      "id": "villa-in-dream-city",
+      "title": "Villa in Dream City",
+      "category": "villa",
+      "meta": "Villa",
+      "tags": [
+        "Feature door",
+        "Lighting"
+      ],
+      "description": "A unique bedroom feature with a custom balloon door made from MDF with integrated lighting.",
+      "thumb": null
+    },
+    {
+      "id": "villa-in-ankawa",
+      "title": "Villa in Ankawa",
+      "category": "villa",
+      "meta": "Villa",
+      "tags": [
+        "Dressing room",
+        "Wardrobes"
+      ],
+      "description": "Custom dressing room featuring built-in wardrobes and space-optimized storage solutions.",
+      "thumb": null
+    },
+    {
+      "id": "empire-wings-duplex",
+      "title": "Empire Wings Duplex",
+      "category": "villa",
+      "meta": "Duplex",
+      "tags": [
+        "Modern lines",
+        "Built-ins"
+      ],
+      "description": "High-end interior woodwork with clean lines and refined details.",
+      "thumb": null
+    },
+    {
+      "id": "villa-in-masife-salahaddin",
+      "title": "Villa in Masife Salahaddin",
+      "category": "villa",
+      "meta": "Villa",
+      "tags": [
+        "Cabinetry",
+        "Paneling"
+      ],
+      "description": "Bespoke carpentry solutions crafted to complement the home’s interior design.",
+      "thumb": null
+    },
+    {
+      "id": "la-corsica-cafe-empire-diamond",
+      "title": "La Corsica Café (Empire Diamond)",
+      "category": "hospitality",
+      "meta": "Cafe",
+      "tags": [
+        "Counter",
+        "Wall cladding"
+      ],
+      "description": "Hospitality woodwork that supports both brand experience and daily durability.",
+      "thumb": null
+    },
+    {
+      "id": "20-booths-international-fair",
+      "title": "+20 Booths (International Fair)",
+      "category": "booths",
+      "meta": "Exhibition",
+      "tags": [
+        "Fast build",
+        "Consistency"
+      ],
+      "description": "Multiple exhibition booths delivered with consistent quality and on-time execution.",
+      "thumb": null
+    },
+    {
+      "id": "gree-showroom",
+      "title": "Gree Showroom",
+      "category": "commercial",
+      "meta": "Showroom",
+      "tags": [
+        "Display",
+        "Lighting"
+      ],
+      "description": "Showroom woodwork designed for product visibility and a high-end customer experience.",
+      "thumb": null
+    },
+    {
+      "id": "zogor-iraq-duhok-erbil",
+      "title": "Zogor Iraq (Duhok, Erbil)",
+      "category": "commercial",
+      "meta": "Retail / Commercial",
+      "tags": [
+        "Cabinetry",
+        "Wall panels"
+      ],
+      "description": "Regional commercial carpentry projects delivered with premium MDF and precision installation.",
+      "thumb": null
+    },
+    {
+      "id": "office-in-kartal-company",
+      "title": "Office in Kartal Company",
+      "category": "commercial",
+      "meta": "Office",
+      "tags": [
+        "Workstations",
+        "Storage"
+      ],
+      "description": "Functional office carpentry including storage, partitions, and built-in solutions.",
+      "thumb": null
+    },
+    {
+      "id": "pro-electronic",
+      "title": "Pro Electronic",
+      "category": "commercial",
+      "meta": "Retail",
+      "tags": [
+        "Displays",
+        "Branding"
+      ],
+      "description": "Retail interior carpentry built to highlight products and support day-to-day use.",
+      "thumb": null
+    },
+    {
+      "id": "baydakh-electronics",
+      "title": "Baydakh Electronics",
+      "category": "commercial",
+      "meta": "Retail",
+      "tags": [
+        "Shelving",
+        "Cabinetry"
+      ],
+      "description": "Retail woodwork including custom shelving and cabinetry with a clean finish.",
+      "thumb": null
+    },
+    {
+      "id": "caffitaly",
+      "title": "CaffItaly",
+      "category": "hospitality",
+      "meta": "Cafe",
+      "tags": [
+        "Bar",
+        "Feature wall"
+      ],
+      "description": "Cafe carpentry featuring refined wood details designed for ambience and durability.",
+      "thumb": null
+    }
+  ],
+  "detailedProjects": [
+    {
+      "id": "zogor-place",
+      "title": "Zogor Place",
+      "badge": "400 m² • Car-painted MDF",
+      "paragraphs": [
+        "Oryx Carpentry completed the carpentry work for Zogor Place, a 400-square-meter space. We used high-quality car-painted MDF wood to ensure durability and an elegant finish. The work included custom-built cabinetry, shelving, and wall paneling — crafted with precision and attention to detail.",
+        "The design was tailored to the client’s vision, blending modern aesthetics with functional space solutions. The client expressed strong satisfaction with both functionality and style."
+      ],
+      "images": [
+        "assets/jobs/zogor-place/zogor-01.jpg",
+        "assets/jobs/zogor-place/zogor-02.jpg"
+      ]
+    },
+    {
+      "id": "villa-dream-city",
+      "title": "Villa in Dream City",
+      "badge": "Bedroom feature • Integrated lighting",
+      "paragraphs": [
+        "We designed and crafted a unique bedroom feature including a custom balloon door made using high-quality MDF with integrated lighting — a functional centerpiece for the room. The project also involved custom-built furniture and decorative woodwork that complemented the overall villa design."
+      ],
+      "images": [
+        "assets/jobs/villa-dream-city/dream-01.jpg",
+        "assets/jobs/villa-dream-city/dream-02.jpg"
+      ]
+    },
+    {
+      "id": "villa-ankawa",
+      "title": "Villa in Ankawa",
+      "badge": "Custom dressing room • Space-optimized",
+      "paragraphs": [
+        "Oryx Carpentry completed a fully customized dressing room, built with MDF wood, including wardrobes, shelving, and storage solutions designed to maximize space. The project required precision and premium finishing to match the villa’s interior style."
+      ],
+      "images": [
+        "assets/jobs/villa-ankawa/ankawa-01.jpg",
+        "assets/jobs/villa-ankawa/ankawa-02.jpg"
+      ]
+    },
+    {
+      "id": "empire-square",
+      "title": "Empire Square",
+      "badge": "TV wall • Partition • Modern lines",
+      "paragraphs": [
+        "In this project, Oryx Carpentry delivered modern carpentry solutions including a decorative TV wall and wooden partition. The work was completed using MDF wood, with clean lines and a refined finish for a contemporary interior feel."
+      ],
+      "images": [
+        "assets/jobs/empire-square/empire-01.jpg"
+      ]
+    }
+  ],
+  "recentlyDeleted": {
+    "portfolio": [
+      {
+        "id": "tmp-del",
+        "title": "Tmp",
+        "category": "commercial",
+        "meta": "",
+        "tags": [],
+        "description": "",
+        "thumb": null
+      }
+    ],
+    "detailedProjects": []
+  }
+}

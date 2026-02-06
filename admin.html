@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Admin — Oryx Carpentry</title>
+    <link rel="stylesheet" href="styles.css?v=20260206-2" />
+    <script defer src="admin.js?v=20260206-4"></script>
+    <style>
+      .admin-wrap{ padding: 28px 0 64px; }
+      .admin-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom: 16px; }
+      .admin-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+      .admin-card{ border:1px solid var(--stroke); background: var(--paper); border-radius: var(--radius); padding:16px; box-shadow: var(--shadow2); }
+      .admin-grid{ display:grid; grid-template-columns: 1fr; gap: 14px; }
+      .admin-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .admin-row3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+      .admin-card h3{ margin:0 0 10px; }
+      .admin-label{ display:grid; gap:7px; }
+      .admin-label span{ color: var(--muted2); font-weight: 800; font-size: 13px; }
+      .admin-input, .admin-textarea{ width:100%; padding: 12px 12px; border-radius: 14px; border:1px solid var(--stroke); background: rgba(255,255,255,.92); color: var(--text); outline:none; }
+      .admin-textarea{ min-height: 92px; resize: vertical; }
+      .admin-thumb{ display:flex; align-items:center; gap: 12px; flex-wrap:wrap; }
+      .admin-thumb img{ width: 160px; height: 96px; object-fit: cover; border-radius: 14px; border:1px solid var(--stroke); background: rgba(20,20,24,.03); }
+      .admin-images{ display:grid; gap: 10px; }
+      .admin-img-row{ display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap:wrap; padding: 10px; border-radius: 14px; border:1px solid var(--stroke); background: rgba(20,20,24,.02); }
+      .admin-img-row img{ width: 140px; height: 86px; object-fit: cover; border-radius: 12px; border:1px solid var(--stroke); background: rgba(255,255,255,.85); }
+      .admin-img-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+      .admin-hr{ height:1px; background: var(--stroke); margin: 18px 0; }
+      @media (max-width: 860px){
+        .admin-row, .admin-row3{ grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="site-header is-elevated">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="Back to site">
+          <span class="brand-text">
+            <span class="brand-tag">Admin</span>
+          </span>
+        </a>
+        <nav class="admin-actions" aria-label="Admin actions">
+          <button class="button secondary" type="button" id="btnReload">Reload</button>
+          <button class="button secondary" type="button" id="btnLogout">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-wrap">
+      <div class="container">
+        <section class="admin-card" id="loginCard" aria-label="Admin login">
+          <h2 style="margin:0 0 10px;">Admin Login</h2>
+          <p class="muted" style="margin:0 0 14px;">Enter the admin password to edit Portfolio and Detailed Projects.</p>
+          <div class="admin-row">
+            <label class="admin-label">
+              <span>Password</span>
+              <input class="admin-input" id="adminPassword" type="password" autocomplete="current-password" />
+            </label>
+            <div style="display:flex; align-items:flex-end; gap:10px;">
+              <button class="button primary" type="button" id="btnLogin">Login</button>
+              <div class="muted" id="loginStatus" style="min-height:22px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="editor" style="display:none;">
+          <div class="admin-top">
+            <div>
+              <h1 style="margin:0;">Content Editor</h1>
+              <p class="muted" style="margin:6px 0 0;">Edit text directly in fields. Replace images by uploading a new file.</p>
+            </div>
+            <div class="admin-actions">
+              <button class="button secondary" type="button" id="tabEditor" aria-pressed="true">Editor</button>
+              <button class="button secondary" type="button" id="tabDeleted" aria-pressed="false">Recently Deleted</button>
+              <button class="button secondary" type="button" id="btnAddPortfolio">Add Portfolio Card</button>
+              <button class="button secondary" type="button" id="btnAddProject">Add Detailed Project</button>
+              <button class="button primary" type="button" id="btnSave">Save Changes</button>
+            </div>
+          </div>
+
+          <section id="editorTab">
+            <div class="admin-hr"></div>
+
+            <h2 style="margin:0 0 10px;">Project Portfolio</h2>
+            <div class="admin-grid" id="portfolioEditor"></div>
+
+            <div class="admin-hr"></div>
+
+            <h2 style="margin:0 0 10px;">Detailed Projects</h2>
+            <div class="admin-grid" id="projectsEditor"></div>
+
+            <p class="muted" id="saveStatus" style="margin:14px 0 0; min-height:22px;"></p>
+          </section>
+
+          <section id="deletedTab" style="display:none;">
+            <div class="admin-hr"></div>
+            <h2 style="margin:0 0 10px;">Recently Deleted</h2>
+            <p class="muted" style="margin:0 0 14px;">Removed items appear here until you restore them or delete permanently.</p>
+
+            <h3 style="margin:0 0 10px;">Portfolio</h3>
+            <div class="admin-grid" id="deletedPortfolio"></div>
+
+            <div class="admin-hr"></div>
+
+            <h3 style="margin:0 0 10px;">Detailed Projects</h3>
+            <div class="admin-grid" id="deletedProjects"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

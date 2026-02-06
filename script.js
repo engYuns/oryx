@@ -705,6 +705,8 @@ function initQuoteForm() {
   const statusEl = qs("#formStatus");
   if (!(form instanceof HTMLFormElement)) return;
 
+  const submitBtn = form.querySelector('button[type="submit"]');
+
   const setStatus = (msg, kind) => {
     if (!statusEl) return;
     statusEl.textContent = msg;
@@ -712,7 +714,15 @@ function initQuoteForm() {
     if (kind) statusEl.classList.add(kind);
   };
 
-  form.addEventListener("submit", (e) => {
+  const isFormspreeConfigured = () => {
+    const action = (form.getAttribute("action") || "").trim();
+    if (!action) return false;
+    if (!/^https:\/\/formspree\.io\/f\//i.test(action)) return false;
+    if (/REPLACE_ME/i.test(action)) return false;
+    return true;
+  };
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const data = new FormData(form);
@@ -726,20 +736,54 @@ function initQuoteForm() {
       return;
     }
 
-    const body = [
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      `Project Type: ${type}`,
-      "",
-      message,
-    ].join("\n");
+    if (!isFormspreeConfigured()) {
+      const body = [
+        `Name: ${name}`,
+        `Phone: ${phone}`,
+        `Project Type: ${type}`,
+        "",
+        message,
+      ].join("\n");
 
-    // Intentionally opens the user’s mail client (static site, no backend)
-    const subject = encodeURIComponent("Quote request — Oryx Carpentry");
-    const mailBody = encodeURIComponent(body);
-    window.location.href = `mailto:Oryxwood06@gmail.com?subject=${subject}&body=${mailBody}`;
+      const subject = encodeURIComponent("Quote request — Oryx Carpentry");
+      const mailBody = encodeURIComponent(body);
+      window.location.href = `mailto:Oryxwood06@gmail.com?subject=${subject}&body=${mailBody}`;
+      setStatus("Opening your email client…", "is-ok");
+      return;
+    }
 
-    setStatus("Opening your email client…", "is-ok");
+    setStatus("Sending…");
+    if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (res.ok) {
+        form.reset();
+        setStatus("Request sent. We’ll contact you soon.", "is-ok");
+        return;
+      }
+
+      let details = "";
+      try {
+        const json = await res.json();
+        if (json && typeof json.error === "string" && json.error.trim()) details = json.error.trim();
+      } catch {
+        // ignore JSON parse errors
+      }
+
+      setStatus(details ? `Could not send. ${details}` : "Could not send. Please try again.", "is-error");
+    } catch {
+      setStatus("Network error. Please try again.", "is-error");
+    } finally {
+      if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = false;
+    }
   });
 }
 

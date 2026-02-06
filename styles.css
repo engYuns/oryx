@@ -389,6 +389,9 @@ h1{
   display:block;
 }
 
+/* About section gallery: keep original sizing, just ensure rounded corners */
+#aboutGallery .gallery-item img{ border-radius: 16px; }
+
 .card{
   border:1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.05);

@@ -23,7 +23,7 @@ Admin panel (login/edit/save/upload) requires the Node server:
 
 ## Notes
 
-- The contact form opens the user’s email client via `mailto:` (no backend required).
+- The contact form posts to `/api/contact` and sends email via Resend (requires `RESEND_API_KEY` on Vercel).
 - If you have a real domain, update `sitemap.xml` to match it.
 
 ## Publish (with /admin.html working)
@@ -84,6 +84,12 @@ For KV/Redis, Vercel will normally inject these automatically when you attach th
 Also set:
 
 - `NODE_ENV=production`
+
+For the contact form email delivery:
+
+- `RESEND_API_KEY` (required)
+- `CONTACT_TO_EMAIL` (optional; defaults to `Oryxwood06@gmail.com`)
+- `CONTACT_FROM_EMAIL` (optional; defaults to `Oryx Carpentry <onboarding@resend.dev>`)
 
 ### 3) Deploy
 

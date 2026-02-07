@@ -714,14 +714,6 @@ function initQuoteForm() {
     if (kind) statusEl.classList.add(kind);
   };
 
-  const isFormspreeConfigured = () => {
-    const action = (form.getAttribute("action") || "").trim();
-    if (!action) return false;
-    if (!/^https:\/\/formspree\.io\/f\//i.test(action)) return false;
-    if (/REPLACE_ME/i.test(action)) return false;
-    return true;
-  };
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -736,32 +728,19 @@ function initQuoteForm() {
       return;
     }
 
-    if (!isFormspreeConfigured()) {
-      const body = [
-        `Name: ${name}`,
-        `Phone: ${phone}`,
-        `Project Type: ${type}`,
-        "",
-        message,
-      ].join("\n");
-
-      const subject = encodeURIComponent("Quote request — Oryx Carpentry");
-      const mailBody = encodeURIComponent(body);
-      window.location.href = `mailto:Oryxwood06@gmail.com?subject=${subject}&body=${mailBody}`;
-      setStatus("Opening your email client…", "is-ok");
-      return;
-    }
+    const endpoint = (form.getAttribute("action") || "/api/contact").trim() || "/api/contact";
 
     setStatus("Sending…");
     if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = true;
 
     try {
-      const res = await fetch(form.action, {
+      const res = await fetch(endpoint, {
         method: "POST",
-        body: data,
         headers: {
+          "Content-Type": "application/json",
           Accept: "application/json",
         },
+        body: JSON.stringify({ name, phone, type, message }),
       });
 
       if (res.ok) {
@@ -771,11 +750,34 @@ function initQuoteForm() {
       }
 
       let details = "";
+      let errorCode = "";
       try {
         const json = await res.json();
-        if (json && typeof json.error === "string" && json.error.trim()) details = json.error.trim();
+        if (json && typeof json.error === "string" && json.error.trim()) {
+          errorCode = json.error.trim();
+          details = errorCode;
+        }
+        if (json && typeof json.details === "string" && json.details.trim()) details = json.details.trim();
       } catch {
         // ignore JSON parse errors
+      }
+
+      // If the backend email provider isn't configured yet, fall back to mailto
+      // so visitors can still contact you.
+      if (errorCode === "missing_resend_api_key") {
+        const body = [
+          `Name: ${name}`,
+          `Phone: ${phone}`,
+          `Project Type: ${type}`,
+          "",
+          message,
+        ].join("\n");
+
+        const subject = encodeURIComponent("Quote request — Oryx Carpentry");
+        const mailBody = encodeURIComponent(body);
+        window.location.href = `mailto:Oryxwood06@gmail.com?subject=${subject}&body=${mailBody}`;
+        setStatus("Opening your email client…", "is-ok");
+        return;
       }
 
       setStatus(details ? `Could not send. ${details}` : "Could not send. Please try again.", "is-error");

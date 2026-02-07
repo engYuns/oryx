@@ -302,9 +302,8 @@
               <div class="gallery" id="contactGallery" aria-label="Contact gallery"></div>
             </div>
 
-            <form class="form card" id="quoteForm" action="https://formspree.io/f/REPLACE_ME" method="POST" novalidate>
+            <form class="form card" id="quoteForm" action="/api/contact" method="POST" novalidate>
               <h3>Request a Quote</h3>
-              <input type="hidden" name="_subject" value="Quote request — Oryx Carpentry" />
               <div class="form-row">
                 <label>
                   <span>Name</span>
@@ -335,7 +334,6 @@
 
               <div class="form-actions">
                 <button class="button primary" type="submit">Send Request</button>
-                <p class="form-hint muted" id="formHint">This form sends your request to our email (no email client needed).</p>
               </div>
 
               <p class="form-status" role="status" aria-live="polite" id="formStatus"></p>

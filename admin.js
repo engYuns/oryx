@@ -706,7 +706,7 @@ async function boot() {
     renderDeleted();
   } catch {
     showLogin();
-    setStatus(loginStatus, "Tip: admin works only with `npm run dev` (not `npm run serve`).");
+    setStatus(loginStatus, "");
   }
 }
 

@@ -10,10 +10,15 @@ export default async function handler(req, res) {
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("Content-Type", "application/json");
       return res.end(JSON.stringify(content));
-    } catch {
+    } catch (e) {
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
-      return res.end(JSON.stringify({ error: "failed_to_read" }));
+      return res.end(
+        JSON.stringify({
+          error: "failed_to_read",
+          details: e?.message ? String(e.message).slice(0, 160) : undefined,
+        })
+      );
     }
   }
 
@@ -41,10 +46,15 @@ export default async function handler(req, res) {
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("Content-Type", "application/json");
       return res.end(JSON.stringify({ ok: true }));
-    } catch {
+    } catch (e) {
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json");
-      return res.end(JSON.stringify({ error: "failed_to_write" }));
+      return res.end(
+        JSON.stringify({
+          error: "failed_to_write",
+          details: e?.message ? String(e.message).slice(0, 160) : undefined,
+        })
+      );
     }
   }
 

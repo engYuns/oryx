@@ -68,7 +68,10 @@ async function logout() {
 async function loadContent() {
   const res = await fetch("/api/content", { cache: "no-store", credentials: "same-origin" });
   if (res.status === 404) throw new Error("api_not_found");
-  if (!res.ok) throw new Error("failed_to_load");
+  if (!res.ok) {
+    const j = await res.json().catch(() => ({}));
+    throw new Error(j?.details || j?.error || `failed_to_load_${res.status}`);
+  }
   const json = await res.json();
   if (!json || typeof json !== "object") throw new Error("invalid_content");
   if (!Array.isArray(json.portfolio)) json.portfolio = [];
@@ -326,6 +329,9 @@ function friendlyLoginError(err) {
   }
   if (msg === "unauthorized") {
     return "Session expired. Please login again.";
+  }
+  if (msg === "missing_kv_env") {
+    return "Storage is not configured on the server (missing Vercel KV env vars).";
   }
   return "Login failed.";
 }

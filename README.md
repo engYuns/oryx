@@ -88,7 +88,7 @@ Also set:
 For the contact form email delivery:
 
 - `RESEND_API_KEY` (required)
-- `CONTACT_TO_EMAIL` (optional; defaults to `Oryxwood06@gmail.com`)
+- `CONTACT_TO_EMAIL` (optional; defaults to `oryx.wood.erbil@gmail.com`)
 - `CONTACT_FROM_EMAIL` (optional; defaults to `Oryx Carpentry <onboarding@resend.dev>`)
 
 ### 3) Deploy

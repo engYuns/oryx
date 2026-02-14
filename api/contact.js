@@ -63,7 +63,7 @@ export default async function handler(req, res) {
     return res.end(JSON.stringify({ error: "missing_fields" }));
   }
 
-  const to = String(process.env.CONTACT_TO_EMAIL || "Oryxwood06@gmail.com").trim();
+  const to = String(process.env.CONTACT_TO_EMAIL || "oryx.wood.erbil@gmail.com").trim();
   const from = String(
     process.env.CONTACT_FROM_EMAIL || "Oryx Carpentry <onboarding@resend.dev>"
   ).trim();

@@ -728,19 +728,14 @@ function initQuoteForm() {
       return;
     }
 
-    const endpoint = (form.getAttribute("action") || "/api/contact").trim() || "/api/contact";
-
     setStatus("Sending…");
     if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = true;
 
     try {
-      const res = await fetch(endpoint, {
+      const res = await fetch(form.action, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ name, phone, type, message }),
+        body: data,
+        headers: { Accept: "application/json" },
       });
 
       if (res.ok) {
@@ -750,34 +745,11 @@ function initQuoteForm() {
       }
 
       let details = "";
-      let errorCode = "";
       try {
         const json = await res.json();
-        if (json && typeof json.error === "string" && json.error.trim()) {
-          errorCode = json.error.trim();
-          details = errorCode;
-        }
-        if (json && typeof json.details === "string" && json.details.trim()) details = json.details.trim();
+        if (json && typeof json.error === "string" && json.error.trim()) details = json.error.trim();
       } catch {
         // ignore JSON parse errors
-      }
-
-      // If the backend email provider isn't configured yet, fall back to mailto
-      // so visitors can still contact you.
-      if (errorCode === "missing_resend_api_key") {
-        const body = [
-          `Name: ${name}`,
-          `Phone: ${phone}`,
-          `Project Type: ${type}`,
-          "",
-          message,
-        ].join("\n");
-
-        const subject = encodeURIComponent("Quote request — Oryx Carpentry");
-        const mailBody = encodeURIComponent(body);
-        window.location.href = `mailto:Oryxwood06@gmail.com?subject=${subject}&body=${mailBody}`;
-        setStatus("Opening your email client…", "is-ok");
-        return;
       }
 
       setStatus(details ? `Could not send. ${details}` : "Could not send. Please try again.", "is-error");

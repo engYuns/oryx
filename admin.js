@@ -318,6 +318,12 @@ function friendlyLoginError(err) {
   if (msg === "invalid_password") {
     return "Wrong password. Default is 'admin' unless ORYX_ADMIN_PASSWORD was set.";
   }
+  if (msg === "missing_admin_password") {
+    return "Admin login is not configured on the server (missing ORYX_ADMIN_PASSWORD).";
+  }
+  if (msg === "missing_token_secret") {
+    return "Admin login is not configured on the server (missing ORYX_ADMIN_TOKEN_SECRET).";
+  }
   if (msg === "unauthorized") {
     return "Session expired. Please login again.";
   }
